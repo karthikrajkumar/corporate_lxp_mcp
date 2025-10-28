@@ -1,0 +1,4 @@
+[console_scripts]
+corporate-lxp-api = corporate_lxp_mcp.main:main
+corporate-lxp-mcp = corporate_lxp_mcp.mcp_server.main:main
+corporate-lxp-registry = corporate_lxp_mcp.registry.main:main

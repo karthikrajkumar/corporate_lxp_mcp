@@ -1,0 +1,60 @@
+services:
+  # Redis for registry storage
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  # MCP Registry Server
+  registry:
+    build: .
+    command: python registry/main.py
+    ports:
+      - "9000:9000"
+    environment:
+      - CORPORATE_LXP_REDIS_URL=redis://redis:6379
+      - CORPORATE_LXP_LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+
+  # Corporate LXP API Server
+  api:
+    build: .
+    command: python main.py
+    ports:
+      - "9001:9001"
+    environment:
+      - CORPORATE_LXP_API_HOST=0.0.0.0
+      - CORPORATE_LXP_API_PORT=9001
+      - CORPORATE_LXP_REGISTRY_HOST=registry
+      - CORPORATE_LXP_REGISTRY_PORT=9000
+      - CORPORATE_LXP_LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    depends_on:
+      - registry
+      - redis
+    volumes:
+      - .:/app
+
+  # MCP Server (for direct connection)
+  mcp-server:
+    build: .
+    command: python -m corporate_lxp_mcp.mcp_server.main
+    environment:
+      - CORPORATE_LXP_LOG_LEVEL=INFO
+      - CORPORATE_LXP_REGISTRY_HOST=registry
+      - CORPORATE_LXP_REGISTRY_PORT=9000
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
+    profiles:
+      - mcp
+
+volumes:
+  redis_data:

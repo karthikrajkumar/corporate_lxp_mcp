@@ -1,0 +1,46 @@
+# MCP Configuration for Corporate LXP Platform
+# This file configures how agentic frameworks connect to our MCP server
+
+mcpServers:
+  corporate-lxp:
+    # Local development configuration
+    command: "python"
+    args: ["-m", "corporate_lxp_mcp.mcp_server.main"]
+    env:
+      PYTHONPATH: "."
+      LOG_LEVEL: "INFO"
+    
+    # Alternative: Connect to remote MCP server
+    # command: "mcp-client"
+    # args: ["--server-url", "http://localhost:8001", "--protocol", "http"]
+    
+    # Configuration options
+    timeout: 30
+    retries: 3
+    
+    # Server capabilities
+    capabilities:
+      - user_management
+      - training_management
+      - skill_assessment
+      - department_management
+    
+    # Available tools
+    tools:
+      - list_employees
+      - get_employee
+      - create_employee
+      - update_employee
+      - delete_employee
+      - get_employee_training
+      - get_employee_skills
+      - get_department_employees
+      - update_training_progress
+      - list_departments
+      - list_training_programs
+
+# Registry configuration (optional)
+registry:
+  url: "http://localhost:8000"
+  auto_register: true
+  heartbeat_interval: 60

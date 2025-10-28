@@ -1,0 +1,199 @@
+Metadata-Version: 2.2
+Name: corporate-lxp-mcp
+Version: 1.0.0
+Summary: Corporate Learning Experience Platform with MCP integration
+Home-page: https://github.com/company/corporate-lxp-mcp
+Author: Corporate LXP Team
+Author-email: dev@company.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Education
+Classifier: Topic :: Office/Business
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: mcp>=1.11.0
+Requires-Dist: redis>=5.0.1
+Requires-Dist: pyyaml>=6.0.1
+Requires-Dist: fastapi>=0.110.0
+Requires-Dist: uvicorn>=0.37.0
+Requires-Dist: pydantic[email]>=2.10.0
+Requires-Dist: aiohttp>=3.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Corporate LXP MCP Platform
+
+A comprehensive Learning Experience Platform (LXP) for corporate environments with MCP (Model Context Protocol) integration. This platform provides user management, training programs, skill assessments, and department management for corporate employees.
+
+## Features
+
+### Core Functionality
+- **Employee Management**: Complete CRUD operations for corporate employees
+- **Department Management**: Organizational structure management
+- **Training Programs**: Corporate training assignment and tracking
+- **Skill Assessments**: Employee skill evaluation and gap analysis
+- **MCP Integration**: Seamless integration with agentic frameworks
+
+### MCP Tools Available
+- `list_employees` - List employees with filtering options
+- `get_employee` - Get employee by ID or email
+- `create_employee` - Add new employee
+- `update_employee` - Update employee information
+- `delete_employee` - Remove employee
+- `get_employee_training` - Get training assignments
+- `get_employee_skills` - Get skill assessments
+- `get_department_employees` - List department employees
+- `update_training_progress` - Track training completion
+- `list_departments` - List all departments
+- `list_training_programs` - Available training programs
+
+## Architecture
+
+The solution follows SOLID principles with clear separation of concerns:
+
+```
+corporate_lxp_mcp/
+├── models/          # Pydantic data models
+├── services/        # Business logic layer
+├── api/            # FastAPI REST endpoints
+├── mcp/            # MCP server implementation
+├── registry/       # MCP registry for discovery
+├── config/         # Configuration management
+└── tests/          # Unit tests
+```
+
+## Quick Start
+
+### Using Docker (Recommended)
+
+1. **Start all services:**
+   ```bash
+   docker-compose up -d
+   ```
+
+2. **Access services:**
+   - API Server: http://localhost:9001
+   - Registry: http://localhost:9000
+   - API Docs: http://localhost:9001/docs
+
+### Manual Installation
+
+1. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   pip install -e .
+   ```
+
+2. **Start services:**
+   
+   In separate terminals:
+   ```bash
+   # Start registry
+   corporate-lxp-registry
+   
+   # Start API server
+   corporate-lxp-api
+   
+   # Start MCP server
+   corporate-lxp-mcp
+   ```
+
+## MCP Integration
+
+### Configuration for Agentic Frameworks
+
+Add this to your MCP configuration:
+
+```yaml
+mcpServers:
+  corporate-lxp:
+    command: "python"
+    args: ["-m", "corporate_lxp_mcp.mcp_server.main"]
+    env:
+      PYTHONPATH: "."
+```
+
+### Available Tools
+
+The MCP server provides tools for managing corporate learners:
+
+- Employee management (CRUD operations)
+- Training assignment and progress tracking
+- Skill assessment management
+- Department-based queries
+- Search and filtering capabilities
+
+## API Documentation
+
+Once the API server is running, visit:
+- **Swagger UI**: http://localhost:9001/docs
+- **ReDoc**: http://localhost:9001/redoc
+
+## Mock Data
+
+The platform comes pre-loaded with:
+- 5 departments (Engineering, Sales, Marketing, HR, Finance, Operations)
+- Sample employees with different roles and departments
+- Training programs (onboarding, leadership, technical, compliance)
+- Skill categories and assessments
+
+## Development
+
+### Code Structure
+- **Models**: Pydantic models for data validation
+- **Services**: Business logic following SOLID principles
+- **API**: FastAPI endpoints with proper error handling
+- **MCP**: Model Context Protocol server implementation
+- **Registry**: Service discovery and configuration management
+
+### Running Tests
+```bash
+pytest tests/
+```
+
+### Code Formatting
+```bash
+black corporate_lxp_mcp/
+isort corporate_lxp_mcp/
+```
+
+## Environment Variables
+
+Create a `.env` file:
+
+```bash
+CORPORATE_LXP_API_HOST=0.0.0.0
+CORPORATE_LXP_API_PORT=8001
+CORPORATE_LXP_REGISTRY_PORT=8000
+CORPORATE_LXP_LOG_LEVEL=INFO
+CORPORATE_LXP_DEBUG=false
+```
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+For issues and questions:
+- Create an issue in the repository
+- Check the API documentation
+- Review the MCP configuration examples
