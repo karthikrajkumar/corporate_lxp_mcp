@@ -10,7 +10,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="corporate-lxp-mcp",
-    version="1.0.0",
+    version="1.0.1",
     author="Corporate LXP Team",
     author_email="dev@company.com",
     description="Corporate Learning Experience Platform with MCP integration",
